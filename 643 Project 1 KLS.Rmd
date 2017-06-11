@@ -1,0 +1,140 @@
+---
+title: "643 Project 1 KLS"
+output: html_document
+---
+
+####Collaborative filtering (CF) uses given rating data by many users for many items as the basis for predicting missing ratings and/or for creating a top-N recommendation list for a given user, called the active user.
+
+####In this project, I'm going to create two recommender algorithms, a user-based collaborative filtering recommender algorithm, and an item-based collaborative filtering recommender algorithm. We'll use these to predict a user's rating for a given joke.
+
+####The data I'll be using is the Jester Dataset created by Ken Goldberg at UC Berkeley. He set up a site where you're prompted with a joke, and then you rate how funny you thought that joke was on a sliding, continuous scale of -10 to 10. After rating just a few jokes, Ken's site then presents you with a list of jokes the model predicts you'll find to be funny. The data we'll be working with contains ratings by joke by user. Some values are blank, since not every user rated every joke.
+
+###Data Import, Exploration, Transformation
+```{r}
+#load library
+library("recommenderlab")
+
+#load a small subset for manual calculations
+jest_data <- read.csv("https://raw.githubusercontent.com/excelsiordata/DATA643/master/jester-subset.csv", )
+#take a look
+head(jest_data)
+#convert NAs to 0
+jest_data[is.na(jest_data)] <- 0
+#take a look again and make sure that worked
+head(jest_data)
+
+j_d_m <- as(jest_data,"realRatingMatrix")
+j_d_m_n <- normalize(j_d_m)
+
+image(j_d_m, main = "Raw Subset")
+image(j_d_m_n, main = "Normalized Subset")
+
+##########################Begin work on the full data set##########################
+#connect to the data
+data(Jester5k)
+
+#Create the user-item matrix
+jest_matrix <- as(Jester5k,"realRatingMatrix")
+jest_matrix
+head(jest_matrix)
+
+#Normalize by subtracting the row mean from all ratings in the row
+jest_n <- normalize(jest_matrix)
+
+#binarize
+jest_b <- binarize(jest_matrix, minRating = 0.001)
+
+#Create a random sample of 1000 users
+set.seed(1234)
+j.samp <- sample(Jester5k, 1000)
+j.samp
+
+#show all of the ratings for one user
+rowCounts(j.samp[1,])
+as(j.samp[1,], "list")
+
+#show rating averages for the first 6 users in the randomized sample
+head(rowMeans(j.samp))
+
+#shows how many jokes each user rated in the full data set
+head(rowCounts(Jester5k))
+
+#shows how many times each joke was rated in the full data set
+colCounts(Jester5k)
+
+#shows the average rating per user in the full data set
+head(rowMeans(Jester5k))
+
+#shows the average rating per joke in the full data set
+head(colMeans(Jester5k))
+```
+
+###Building and testing the POPULAR recommendation algorithm
+
+```{r}
+############################# POPULAR ##################################
+
+#Build a popularity recommender using the first 1,000 users
+r <- Recommender(Jester5k[1:1000], method = "POPULAR")
+r
+getModel(r)$topN
+
+#Recommend 3 jokes to 2 users
+recom <- predict(r, Jester5k[1005:1006], n = 3)
+as(recom, "list")
+
+#gives us predicted ratings for these users
+recom <- predict(r, Jester5k[1006:1007], type = "ratings")
+as(recom, "matrix")[,1:10]
+#if we want to include the original ratings for the users as well:
+recom <- predict(r, Jester5k[1006:1007], type = "ratingMatrix")
+as(recom, "matrix")[,1:10]
+
+j.cross <- evaluationScheme(Jester5k[1:1000], method = "cross", k = 4, given = 3, goodRating = 5)
+j.cross
+j.cross.results <- evaluate(j.cross, method = "POPULAR", type = "topNList", n = c(1, 3, 5, 10, 15, 20))
+
+plot(j.cross.results, annotate = TRUE, main = "ROC Curve for POPULAR Recommender Method")
+plot(j.cross.results, "prec/rec", annotate = TRUE, main = "Precision-Recall for POPULAR Recommender Method")
+```
+
+###Building and testing the UBCF and IBCF recommendation algorithms 
+
+```{r}
+######################### UBCF and IBCF ############################
+
+#divide the data into 90% training 10% test
+div <- evaluationScheme(Jester5k[1:1000], method="split", train = 0.9, given = 15, goodRating = 5)
+div
+
+#Create the user-based collaborative filtering recommender using the training data
+r.ubcf <- Recommender(getData(div, "train"), "UBCF")
+r.ubcf
+
+#Create the item-based collaborative filtering recommender using the training data
+r.ibcf <- Recommender(getData(div, "train"), "IBCF")
+r.ibcf
+
+#Compute predicted ratings for test data that is known using the UBCF algorithm
+p.ubcf <- predict(r.ubcf, getData(div, "known"), type = "ratings")
+p.ubcf
+
+#Compute predicted ratings for test data that is known using the IBCF algorithm
+p.ibcf <- predict(r.ibcf, getData(div, "known"), type = "ratings")
+p.ibcf
+
+#Calculate the error between training prediction and unknown test data
+error <- rbind(
+  UBCF = calcPredictionAccuracy(p.ubcf, getData(div, "unknown")),
+  IBCF = calcPredictionAccuracy(p.ibcf, getData(div, "unknown")))
+error
+
+#another less clean way to code the same thing
+error.ubcf<-calcPredictionAccuracy(p.ubcf, getData(div, "unknown"))
+error.ibcf<-calcPredictionAccuracy(p.ibcf, getData(div, "unknown"))
+error <- rbind(error.ubcf,error.ibcf)
+rownames(error) <- c("UBCF","IBCF")
+error
+```
+
+###As you can see, user-based collaborative filtering does a better job of predicting ratings than item-based collaborative filtering. This can be seen in the lower prediction error value.  
