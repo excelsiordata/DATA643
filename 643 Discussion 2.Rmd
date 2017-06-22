@@ -1,0 +1,45 @@
+---
+title: "643 Discussion 2 KLS"
+output: html_document
+---
+  
+##Music Recommendations at Scale with Spark  
+###Lecture by Christopher Johnson, Spotify Employee  
+      
+    Spotify is a music streaming service which at the time of lecture, contained
+    a huge catalog of over 40 million songs  
+      
+    Features:  
+      Personalized recommendations  
+      Artist radio  
+      Artist page  
+    
+    How can we find good recommendations?  
+      Manual curation  
+      Manually tag attributes   
+      Audio content, metadata, text analysis  
+      Collaborative filtering   
+    
+    Spotify uses collaborative filtering
+    
+    Explicit vs. Implicit Matrix Factorization
+      Implicit matrix factorization is what Spotify uses
+    
+    Spotify was using Hadoop until 2014, then they switched to Spark
+      First attempt: "broadcast everything"
+        Run time: 10 hours
+      Second attempt: "full gridify"
+        Run time: 3.5 hours
+      Third attempt: "half gridify"
+        Run time: 1.5 hours
+    
+    Random learnings:
+      PairRDDFunctions: Split all your values up into p-valued pairs
+      
+      Kryo serialization: Much faster than java serialization but may
+      require you to write and/or register your own serializer
+      
+      Running with larger datasets often results in failed executors and
+      job never fully recovers. At the time of the lecture, they could
+      only use 20% of their data.
+      
