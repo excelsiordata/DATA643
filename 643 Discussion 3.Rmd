@@ -1,0 +1,45 @@
+---
+title: "643 Discussion 3"
+output: html_document
+author: Kelly Shaffer
+---
+
+-------------------------------------------------------------------------
+
+  As more systems and sectors are driven by predictive analytics, there is increasing awareness of the possibility and pitfalls of algorithmic discrimination. In what ways do you think Recommender Systems reinforce human bias? Reflecting on the techniques we have covered, do you think recommender systems reinforce or help to prevent unethical targeting or customer segmentation?  Please provide one or more examples to support your arguments.
+  
+  A few resources:
+  
+  When Recommendations Systems Go Bad; MLconf SEA 2016
+  
+  Evan Estola
+  
+  https://www.youtube.com/watch?v=MqoRzNhrTnQ
+  
+  http://cds.nyu.edu/recommendation-systems-go-bad-%E2%80%A8/
+  
+  
+  Equality of Opportunity in Supervised Learning
+  
+  Moritz Hardt, Eric Price, Nathan Srebro
+  
+  https://arxiv.org/pdf/1610.02413.pdf
+  
+-------------------------------------------------------------------------
+
+  I found a Wall Street Journal article on this topic from 2002. Looks like this issue has been around for a while! For the record, I don't agree with the heternormative tone of the article, implying that gay = bad, but we'll ignore that and keep in mind that this article was written in 2002 when things were quite different.
+  
+  The article can be found at the following link:
+  
+  https://www.wsj.com/articles/SB1038261936872356908
+  
+  The author, Jeffrey Zaslow, recounts others' experiences with the recommender systems behind things such as TiVo, Amazon, and Netflix (back when it was only a DVD service). There is a common theme of the systems pigeonholing people based on their very specific behavior. Mostly everyone in the article began an attempt to counteract the system's behavior to throw it off. One person really liked watching movies about homicides, but he didn't want his TiVo to think he was an axe murderer, so he started recording cooking shows to soften his Tivo's view of him.
+  
+  I think this article is so interesting because many of the people in this article take the labeling so personally. One person says, "I know it's dumb to take it personally, but it's in your face. These are supposedly objective computers saying, 'This is what we think of you.'"
+  
+-----------------------------------------------------------------------  
+  
+  Here is a pretty good example of this pigeonholing from my Amazon homepage. I ordered one R book and a set of homemade bath products for my mom for Christmas - and now it thinks that's all I want. Looks like the issues from 2002 are still plaguing us today!
+  
+![](https://github.com/excelsiordata/DATA643/blob/master/Amazon%20Recommendations.jpg?raw=TRUE)
+  
