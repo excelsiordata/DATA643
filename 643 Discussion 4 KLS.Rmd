@@ -1,0 +1,29 @@
+---
+title: "643 Discussion 4 KLS"
+output: html_document
+author: Kelly Shaffer
+---
+
+####Attacks on Recommender System
+
+  Read the article below and consider how to handle attacks on recommender systems. Can you think of a similar example where a collective effort to alter the workings of content recommendations have been successful? How would you design a system to prevent this kind of abuse?
+
+https://www.washingtonpost.com/news/morning-mix/wp/2017/04/19/wisdom-of-the-crowd-imdb-users-gang-up-on-the-promise-before-it-even-opens/?utm_term=.329a75ece088
+
+---------------------------------------------------------------------------
+
+  A few months ago, a new bar opened in Cincinnati's "Over the Rhine" neighborhood. With a treehouse theme including swings hanging from the ceiling as seats from the ceiling, everyone was excited. Until their soft opening.
+  
+  People started to notice a trend regarding who was and was not admitted to the establishment. The following article goes into further detail:
+
+http://www.cincinnativseveryone.com/new-treehouse-bar-otr-might-little-sexist-racist/
+
+  Citizens of Cincinnati weren't putting up with the blatant racism. As you can see in the article, individuals began blasting the Facebook page with negative reviews, driving their star rating down to 1.6. I'm sure this had an impact on Facebook recommending the bar to people as a place they should check out.
+  
+  The bar ended up shutting down the page, and then set up a new one. Here's a screenshot of the new page:  
+
+![](https://github.com/excelsiordata/DATA643/blob/master/Treehouse%20FB%20Screenshot.jpg?raw=TRUE)
+
+  Now they have a whopping 1.3 star rating. Quoting one reviewer, "I don't see how making a new Facebook page does anything positive to account for all the racism, hatred, and lies your establishment stands for."
+
+  I have to say, this is one example of users fighting against something they don't think is right, and I'm on board. In cases like this, I think it's important that people can share their experience and voice with others. I wouldn't want the recommender to counteract it and continue recommending this bar to people.
